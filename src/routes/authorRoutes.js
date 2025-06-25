@@ -1,1 +1,2 @@
-const prisma = require('../utils/prismaClient');
+const express = require('express');
+const router = express.router();

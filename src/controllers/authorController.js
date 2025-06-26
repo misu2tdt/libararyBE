@@ -31,7 +31,7 @@ const getAuthors = async(req, res) =>{
 
 const getAuthorById = async(req, res) =>{
     try{
-        const id = parse(req.params.id);
+        const id = parseInt(req.params.id);
         const author = await prisma.author.findUnique( { where: {id} } );
         if(!author){
             res.status(404).json({message: 'Author Not Found'})
@@ -46,7 +46,7 @@ const getAuthorById = async(req, res) =>{
 
 const updateAuthor = async(req, res) =>{
     try{
-        const id = parse(req.params.id);
+        const id = parseInt(req.params.id);
         const {name, bio} = req.body;
         const updateAuthor = await prisma.author.update({
             where: {id},
@@ -62,8 +62,8 @@ const updateAuthor = async(req, res) =>{
 
 const deleteAuthor = async(req, res) =>{
     try{
-        const id = parse(req.params.id);
-        const deleteAuthor = await prisma.author.delete({
+        const id = parseInt(req.params.id);
+        await prisma.author.delete({
             where: {id}
         })
         res.json({message: 'Author deleted'});
@@ -75,7 +75,7 @@ const deleteAuthor = async(req, res) =>{
 
 module.exports = {
     createAuthor,
-    getAuthor,
+    getAuthors,
     getAuthorById,
     updateAuthor,
     deleteAuthor

@@ -33,7 +33,7 @@ const getCategories = async (req, res) =>{
 
 const getCategoryById = async (req, res) =>{
     try{
-        const id = parse(req.params.id);
+        const id = parseInt(req.params.id);
 
         const category = await prisma.category.findUnique({
             where: {id}
@@ -51,7 +51,7 @@ const getCategoryById = async (req, res) =>{
 
 const updateCategory = async (req, res) =>{
     try{
-        const id = parse(req.params.id);
+        const id = parseInt(req.params.id);
         const {name, description} = req.body;
 
         const updateCategory = await prisma.category.update({
@@ -67,7 +67,7 @@ const updateCategory = async (req, res) =>{
 
 const deleteCategory = async (req, res) =>{
     try{
-        const id = parse(req.params.id);
+        const id = parseInt(req.params.id);
 
         const deleteCategory = await prisma.category.delete({
             where: {id}

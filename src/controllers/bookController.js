@@ -39,12 +39,13 @@ const getBooks = async(req, res) =>{
 const getBookById = async(req,res) =>{
     try {
         const id = parseInt(req.params.id);
+        if (isNaN(id)) return res.status(400).json({ message: 'Invalid ID' });
         const book = await prisma.book.findUnique({
             where: {id},
             include: {author: true, category: true}
         });
         if(!book) { return res.status(404).json({message:'Book Not Found'})};
-        res.json(book)
+        res.json(book);
     } catch (err) {
         console.error(err);
         res.status(500).json({message:'Internal Server Error'});
@@ -55,6 +56,7 @@ const getBookById = async(req,res) =>{
 const updateBook = async(req, res) =>{
     try {
         const id = parseInt(req.params.id);
+        if (isNaN(id)) return res.status(400).json({ message: 'Invalid ID' });
         const{title, description,  publishedYear, availableCopies, authorId, categoryId} = req.body;
         const updatebook = await prisma.book.update({
             where: {id},
@@ -71,10 +73,11 @@ const updateBook = async(req, res) =>{
 const deleteBook = async(req, res) =>{
     try {
         const id = parseInt(req.params.id);
+        if (isNaN(id)) return res.status(400).json({ message: 'Invalid ID' });
         await prisma.book.delete({
             where: {id}
         });
-        res.json({message:'Book Delete'})
+        res.json({message:'Book Delete'});
     } catch (err) {
         console.error(err);
         res.status(500).json({ message: 'Internal Server Error' });

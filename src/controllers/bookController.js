@@ -77,7 +77,7 @@ const deleteBook = async(req, res) =>{
         await prisma.book.delete({
             where: {id}
         });
-        res.json({message:'Book Delete'});
+        res.json({message:'Book Deleted'});
     } catch (err) {
         console.error(err);
         res.status(500).json({ message: 'Internal Server Error' });

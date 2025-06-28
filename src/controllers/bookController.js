@@ -53,6 +53,13 @@ const getBookById = async(req,res) =>{
 
 };
 
+
+//Trong updateBook chưa kiểm tra xem book tồn tại trước khi update → nếu Prisma gặp id không tồn tại sẽ lỗi 500, 
+// bạn nên thêm catch riêng cho Prisma lỗi P2025 giống mình đã gợi ý ở trên.
+//updateBook nên kiểm tra authorId, categoryId nếu thay đổi — hiện tại cho phép cập nhật authorId nhưng không kiểm tra nó có thực sự tồn tại không, dễ gây lỗi khóa ngoại.
+//publishedYear chưa validate kiểu dữ liệu (nếu gửi text sẽ lỗi) — nên parseInt + validate năm >= 0
+//có thể gom check validate vào middleware (ví dụ dùng zod hoặc express-validator) để controller gọn hơn
+
 const updateBook = async(req, res) =>{
     try {
         const id = parseInt(req.params.id);

@@ -5,7 +5,7 @@ const createCategory = async (req, res) =>{
     try{
         const {name, description} = req.body;
 
-        if(!name, !description){
+        if(!name || !description){
             return res.status(400).json({message: 'Missing required fields'});
         }
 
@@ -49,6 +49,9 @@ const getCategoryById = async (req, res) =>{
     }
 };
 
+
+//kiểm tra xem category tồn tại trước khi update, như mình gợi ý bên trên (bắt lỗi P2025).
+//Validate độ dài name, description nếu muốn tránh spam
 const updateCategory = async (req, res) =>{
     try{
         const id = parseInt(req.params.id);

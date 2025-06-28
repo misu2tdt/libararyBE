@@ -34,7 +34,7 @@ const getAuthorById = async(req, res) =>{
         const id = parseInt(req.params.id);
         const author = await prisma.author.findUnique( { where: {id} } );
         if(!author){
-            res.status(404).json({message: 'Author Not Found'})
+            return res.status(404).json({message: 'Author Not Found'})
         }
         res.json(author)
 
@@ -44,6 +44,9 @@ const getAuthorById = async(req, res) =>{
     }
 };
 
+
+//nếu id không tồn tại sẽ gây Prisma error, có thể catch riêng lỗi Prisma.PrismaClientKnownRequestError với code P2025 (record not found) để trả về 404 đẹp hơn.
+// Chưa validate dữ liệu (ví dụ kiểm tra độ dài name, bio) — có thể dùng zod hoặc express-validator//
 const updateAuthor = async(req, res) =>{
     try{
         const id = parseInt(req.params.id);

@@ -26,7 +26,11 @@ const createBook = async (req, res) =>{
 const getBooks = async(req, res) =>{
     try {
         const books = await prisma.book.findMany({
-            include: {author: true, category: true}
+            include: {
+                author: { select: { name: true } },
+                category: { select: { name: true } }
+            }
+
         });
         res.json(books)
     } catch (err) {
@@ -91,11 +95,29 @@ const deleteBook = async(req, res) =>{
     }
 
 };
+const getBookByCategory = async(req, res) =>{
+    try {
+        const categoryId = parseInt(req.params.categoryId);
+        const books = await prisma.book.findMany({
+            where:{categoryId},
+            include:{
+                author: { select: { name: true} },
+                category : { select: {name: true}}
+            }
+    });
+    res.json(books);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({message:'Internal Server Error'});
+    }
+}
+
 
 module.exports = {
     createBook,
     getBooks,
     getBookById,
     updateBook,
-    deleteBook
+    deleteBook,
+    getBookByCategory
 };

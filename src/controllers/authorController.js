@@ -76,10 +76,28 @@ const deleteAuthor = async(req, res) =>{
     }
 };
 
+const getBooksByAuthor = async(req, res) =>{
+    try {
+        const id = parseInt(req.params.id);
+        const books = await prisma.book.findMany({
+            where:{authorId: id},
+            include:{
+                author:{select:{name: true}},
+                category:{select:{name: true}}
+            }
+        });
+        res.json(books);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({message:'Internal Server Error'});
+    }
+}
+
 module.exports = {
     createAuthor,
     getAuthors,
     getAuthorById,
     updateAuthor,
-    deleteAuthor
+    deleteAuthor,
+    getBooksByAuthor
 };

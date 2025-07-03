@@ -5,7 +5,8 @@ const cors = require("cors");
 const userRoutes = require("./routes/userRoutes"); 
 const authorRoutes = require('./routes/authorRoutes');
 const categoryRoutes = require('./routes/categoryRoutes');
-const bookRoutes = require('./routes/bookRoutes')
+const bookRoutes = require('./routes/bookRoutes');
+const loanRoutes = require('./routes/loanRoutes');
 const app = express();
 
 app.use(cors());
@@ -15,6 +16,7 @@ app.use("/api/users", userRoutes);
 app.use("/api/authors", authorRoutes);  
 app.use("/api/categories", categoryRoutes);
 app.use("/api/books", bookRoutes);
+app.use('/api/loans', loanRoutes);
 
 app.get("/", (req, res) => {
   res.send("Library API is running");

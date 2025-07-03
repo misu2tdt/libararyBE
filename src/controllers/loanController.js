@@ -66,25 +66,43 @@ const getLoanById = async (req, res) => {
 
 // Return loan
 const returnLoan = async (req, res) => {
-  // TODO: cập nhật returnDate = now()
-  // TODO: tăng availableCopies cho book
-  // TODO: trả về loan đã cập nhật
+    try {
+        const id = parseInt(req.params.id);
+        const loan = await prisma.loan.findUnique({
+            where: {id},
+            include:{book: true, user: true}
+        });
+        if(!loan) return res.status(404).json({message: 'Loan Not Found'});
+        if(loan.returnDate){
+            return res.status(400).json({message: 'Loan already returned'});
+        }
+        const updateLoan = await prisma.loan.update({
+            where:{id},
+            data:{returnDate : new Date()},
+            include:{book: true, user: true}
+        });
+        res.json(updateLoan);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({message:'Internal Server Error'});
+    }
+
 };
 
 // Delete loan (optional)
-const deleteLoan = async (req, res) => {
+/* const deleteLoan = async (req, res) => {
     try {
         const id = parseInt(rq.params.id);
         
     } catch (error) {
         
     }
-};
+}; */
 
 module.exports = {
   createLoan,
   getLoans,
   getLoanById,
   returnLoan,
-  deleteLoan
+  //deleteLoan
 };
